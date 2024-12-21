@@ -13,10 +13,7 @@ class Screen1 extends StatelessWidget {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
           child: Text('Go Forwards To Screen 2'),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Screen2();
-            }));
+          onPressed: () {Navigator.pushNamed(context, '/second');
           },
         ),
       ),
