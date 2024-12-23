@@ -1,5 +1,8 @@
+import 'dart:math';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:climaflutter/services/location.dart';
+import 'package:http/http.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -7,27 +10,36 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  final LocationSettings locationSettings = LocationSettings(
-    accuracy: LocationAccuracy.low,
-    distanceFilter: 100,
-  );
-  void getLocation() async{
-    Position position = await Geolocator.getCurrentPosition(locationSettings: locationSettings);
-    print(position);
+  @override
+  void initState() {
+    super.initState();
+    getLocation();
   }
+
+  void getData() async {
+    var url = Uri.parse(
+        'https://samples.openweathermap.org/data/2.5/weather?q=London&appid=b1b15e88fa797225412429c1c50c122a1');
+    http.Response response = await http.get(url);
+    print(response.body);
+    if (response.statusCode == 200) {
+      String data = response.body;
+      print(data);
+    } else {
+      print(response.statusCode);
+    }
+  }
+
+  void getLocation() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    print('Latitude: ${location.latitude}');
+    print('Longitude: ${location.longitude}');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            //Get the current location
-            getLocation();
-            print('object');
-          },
-          child: Text('Get Location'),
-        ),
-      ),
-    );
+    getData();
+    return Scaffold();
   }
 }
