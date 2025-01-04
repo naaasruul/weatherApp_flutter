@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITASKER</title>
+
+    <link rel="stylesheet" href="calendar.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+
+    <link rel="stylesheet" href="assets/vendors/sweetalert2/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="assets/vendors/chartjs/Chart.min.css">
+
+    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+
+    <style>
+        /* Print-specific styles */
+        @media print {
+            
+            /* Hide elements that shouldn't be printed */
+            .no-print {
+                display: none;
+            }
+            #main{
+                margin: 0;
+            }
+    
+            /* Ensure the elements you want to print are visible */
+            .want-print {
+                display: block;
+            }
+    
+            /* You can add more styles here to adjust the page layout when printing */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                color: #333;
+            }
+    
+            /* Style for tables and other printable content */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+            th {
+                background-color: #f4f4f4;
+            }
+            
+            /* Optional: remove header and footer from printing */
+            header, footer {
+                display: none;
+            }
+    
+            /* Adjust for any other page-specific layout changes */
+            .container {
+                width: 100%;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div id="main">
+            <div id="sidebar" class="active no-print">
+                <div class="sidebar-wrapper active">
+                    <div class="sidebar-header">
+                        <div class="d-flex justify-content-between">
+                            <div class="logo">
+                                <a href="index.html">UNITASKER</a>
+                            </div>
+                            <div class="toggler">
+                                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <ul class="menu">
+                            <li class="sidebar-title">Menu</li>
+            
+                            <li class="sidebar-item active ">
+                                <a href="index.html" class='sidebar-link'>
+                                    <i class="bi bi-grid-fill"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+            
+                            <li class="sidebar-item  has-sub">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-stack"></i>
+                                    <span>User</span>
+                                </a>
+                                <ul class="submenu ">
+                                    <li class="submenu-item ">
+                                        <a href="allStudent.html">Students</a>
+                                    </li>
+                                    <li class="submenu-item ">
+                                        <a href="allLecturer.html">Lecturers</a>
+                                    </li>
+                                    <li class="submenu-item ">
+                                        <a href="performance.html">Performance</a>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                            <hr>
+                            <li class="sidebar-item  ">
+                                <a href="../login.html" class='sidebar-link'>
+                                    <span>Log out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+                </div>
+            </div>
+
+            <div class="page-content no-print">
+                <section class="row">
+                    <div class="col-12 col-lg-12">
+                        <div class="row">
+                            <div class="col-12 col-lg-12 col-md-6">
+                                <div class="card">
+                                    <div class="card-body py-4 px-5">
+                                        <div class="d-flex align-items-center">
+                                            <div class="avatar avatar-xl">
+                                                <img src="assets/images/faces/2.jpg" alt="Face 1">
+                                            </div>
+                                            <div class="ms-3 name">
+                                                <h5 class="font-bold">Admin</h5>
+                                                <h6 class="text-muted mb-0">Administrator</h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+           <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">All Lecturers Details</h4>
+                    </div>
+        
+                        <div class="card-body">
+                            <!-- Table with outer spacing -->
+                            <div class="table-responsive">
+                                <table class="table table-lg">
+                                    <thead>
+                                        <tr>
+                                            <th>Lecturer</th>
+                                            <th>Lecturer ID</th>
+                                            <th>Email</th>
+                                            <th>Department</th>
+                                            <th class="no-print"></th> <!-- New column for action buttons -->
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="avatar avatar-lg bg-primary">
+                                                    <img src="assets/images/faces/1.jpg" alt="Lecturer Photo">
+                                                </div>
+                                                <span class="ms-2">Dr. Michael Right</span>
+                                            </td>
+                                            <td>LR12345</td>
+                                            <td>michael.right@university.com</td>
+                                            <td>Computer Science</td>
+                                            <td class="no-print">
+                                                <button class="btn btn-warning btn-sm " onclick="editLecturer('LR12345')">Edit</button>
+                                                <button class="btn btn-danger btn-sm " onclick="deleteLecturer('LR12345')">Delete</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="avatar avatar-lg bg-secondary">
+                                                    <img src="assets/images/faces/2.jpg" alt="Lecturer Photo">
+                                                </div>
+                                                <span class="ms-2">Dr. Sarah Johnson</span>
+                                            </td>
+                                            <td>LR12346</td>
+                                            <td>sarah.johnson@university.com</td>
+                                            <td>Biology</td>
+                                            <td class="no-print">
+                                                <button class="btn btn-warning btn-sm no-print" onclick="editLecturer('LR12346')">Edit</button>
+                                                <button class="btn btn-danger btn-sm no-print" onclick="deleteLecturer('LR12346')">Delete</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="avatar avatar-lg bg-success">
+                                                    <img src="assets/images/faces/3.jpg" alt="Lecturer Photo">
+                                                </div>
+                                                <span class="ms-2">Dr. James Smith</span>
+                                            </td>
+                                            <td>LR12347</td>
+                                            <td>james.smith@university.com</td>
+                                            <td>History</td>
+                                            <td class="no-print">
+                                                <button class="btn btn-warning btn-sm no-print" onclick="editLecturer('LR12347')">Edit</button>
+                                                <button class="btn btn-danger btn-sm no-print" onclick="deleteLecturer('LR12347')">Delete</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="avatar avatar-lg bg-info">
+                                                    <img src="assets/images/faces/4.jpg" alt="Lecturer Photo">
+                                                </div>
+                                                <span class="ms-2">Dr. Emma Watson</span>
+                                            </td>
+                                            <td>LR12348</td>
+                                            <td>emma.watson@university.com</td>
+                                            <td>Literature</td>
+                                            <td class="no-print">
+                                                <button class="btn btn-warning btn-sm no-print" onclick="editLecturer('LR12348')">Edit</button>
+                                                <button class="btn btn-danger btn-sm no-print" onclick="deleteLecturer('LR12348')">Delete</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                
+                         
+                            </div>
+                                           <!-- Print button for lecturers details -->
+                    <button onclick="printReport('lecturers-table')" class="btn btn-primary mt-3 no-print">Print Report</button>
+                        </div>
+                        
+            
+                   
+                </div>
+                
+            </div>
+           </div>
+
+
+
+
+
+        </div>
+    </div>
+     <script>
+        // Edit lecturer
+function editLecturer(lecturerId) {
+    alert("Edit lecturer with ID: " + lecturerId);
+    // Add your edit functionality here
+}
+
+// Delete lecturer
+function deleteLecturer(lecturerId) {
+    if (confirm("Are you sure you want to delete lecturer with ID: " + lecturerId + "?")) {
+        // Add your delete functionality here
+        alert("Lecturer with ID: " + lecturerId + " deleted.");
+    }
+}
+
+        document.getElementById('password').addEventListener('click', async (e) => {
+
+const { value: password } = await Swal.fire({
+    title: 'Enter group code',
+    input: 'text',
+    inputLabel: 'Code',
+    inputPlaceholder: 'Enter group code',
+    inputAttributes: {
+    maxlength: 10,
+    autocapitalize: 'off',
+    autocorrect: 'off'
+    }
+})
+
+if (password) {
+    Swal.fire(`Entered password: ${password}`)
+}
+
+})
+    </script>
+
+    <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/js/extensions/sweetalert2.js"></script>
+    <script src="assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <script src="assets/js/main.js"></script>
+
+    <script src="assets/js/extensions/sweetalert2.js"></script>
+    <script src="assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+    
+     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth', // Default view
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: [
+                    {
+                        title: 'Lecturer’s Meeting',
+                        start: '2025-01-06T10:30:00',
+                        end: '2025-01-06T12:30:00',
+                        description: 'Discuss teaching schedule',
+                        location: 'Room 101',
+                    }
+                ]
+            });
+
+            calendar.render();
+        });
+    </script>
+    <script>
+        // Function to print specific report
+function printReport(elementId) {
+    console.log('triggered');
+    var content = document.getElementById(elementId);
+    
+    // Print the current page
+    window.print();
+}
+    </script>
+  
+</body>
+</html>
+

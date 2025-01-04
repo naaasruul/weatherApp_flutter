@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNITASKER</title>
+
+    <link rel="stylesheet" href="calendar.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/bootstrap.css">
+
+    <link rel="stylesheet" href="assets/vendors/sweetalert2/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="assets/vendors/iconly/bold.css">
+    <link rel="stylesheet" href="assets/vendors/chartjs/Chart.min.css">
+
+    <link rel="stylesheet" href="assets/vendors/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+    <style>
+        .want-print{
+            display: none;
+        }
+        /* Print-specific styles */
+        @media print {
+            
+            /* Hide elements that shouldn't be printed */
+            .no-print {
+                display: none;
+            }
+    
+            #main {
+                margin: 0;
+            }
+    
+            /* Ensure the elements you want to print are visible */
+            .want-print {
+                display: block;
+            }
+    
+            /* You can add more styles here to adjust the page layout when printing */
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                color: #333;
+            }
+    
+            /* Style for tables and other printable content */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+    
+            th, td {
+                padding: 8px;
+                text-align: left;
+                border: 1px solid #ddd;
+            }
+    
+            th {
+                background-color: #f4f4f4;
+            }
+            
+            /* Optional: remove header and footer from printing */
+            header, footer {
+                display: none;
+            }
+    
+            /* Adjust for any other page-specific layout changes */
+            .container {
+                width: 100%;
+                padding: 0;
+            }
+
+            .card{
+width: 200px;
+            }
+    
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <div id="main">
+            <div id="sidebar" class="active no-print">
+                <div class="sidebar-wrapper active">
+                    <div class="sidebar-header">
+                        <div class="d-flex justify-content-between">
+                            <div class="logo">
+                                <a href="index.html">UNITASKER</a>
+                            </div>
+                            <div class="toggler">
+                                <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-menu">
+                        <ul class="menu">
+                            <li class="sidebar-title">Menu</li>
+            
+                            <li class="sidebar-item active ">
+                                <a href="index.html" class='sidebar-link'>
+                                    <i class="bi bi-grid-fill"></i>
+                                    <span>Dashboard</span>
+                                </a>
+                            </li>
+            
+                            <li class="sidebar-item  has-sub">
+                                <a href="#" class='sidebar-link'>
+                                    <i class="bi bi-stack"></i>
+                                    <span>User</span>
+                                </a>
+                                <ul class="submenu ">
+                                    <li class="submenu-item ">
+                                        <a href="allStudent.html">Students</a>
+                                
+                                    </li>
+                                    <li class="submenu-item ">
+                                        <a href="allLecturer.html">Lecturers</a>
+                                    </li>
+                                    <li class="submenu-item ">
+                                        <a href="performance.html">Performance</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <hr>
+                            <li class="sidebar-item  ">
+                                <a href="../login.html" class='sidebar-link'>
+                                    <span>Log out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Student Performance</h4>
+                                </div>
+                                <div class="card-body">
+                                    <canvas class="no-print" id="bar"></canvas>
+                                    <!-- Print button for performance card -->
+                                 <button onclick="printReport('performance-card')" class="btn btn-primary mt-3 no-print">Print Report</button>
+                                </div>
+                                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+     
+    <script src="assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/js/extensions/sweetalert2.js"></script>
+    <script src="assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+
+    <script src="assets/js/main.js"></script>
+
+    <script src="assets/js/extensions/sweetalert2.js"></script>
+    <script src="assets/vendors/sweetalert2/sweetalert2.all.min.js"></script>
+    
+    <script src="assets/vendors/chartjs/Chart.min.js"></script>
+    <script src="assets/js/pages/ui-chartjs.js"></script>
+
+    <script>
+        // Function to print specific report
+function printReport(elementId) {
+    console.log('triggered');
+    var content = document.getElementById(elementId);
+    
+    // Print the current page
+    window.print();
+}
+    </script>
+</body>
+</html>
