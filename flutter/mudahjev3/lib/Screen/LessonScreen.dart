@@ -66,8 +66,8 @@ class _LessonScreenState extends State<LessonScreen> {
                           print('LALALA:: ${notes}');
 
                         //   pass the notes to the next page
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteVideo(content: notes,
-
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteVideo(
+                            content: notes,
                           //   pass data here
 
                           )));
