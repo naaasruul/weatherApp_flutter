@@ -56,7 +56,7 @@ class _LessonScreenState extends State<LessonScreen> {
                   child: ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
                       var notes = widget.category['lessons']['notes'][index];
-
+                      var listNotes = widget.category['lessons']['notes'];
                       return ListTile(
                         title: Text(notes['title']),
                         subtitle: Text(notes['description']),
@@ -67,7 +67,8 @@ class _LessonScreenState extends State<LessonScreen> {
 
                         //   pass the notes to the next page
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteVideo(
-                            content: notes,
+                            content: listNotes,
+                          currentIndex: index,
                           //   pass data here
 
                           )));
