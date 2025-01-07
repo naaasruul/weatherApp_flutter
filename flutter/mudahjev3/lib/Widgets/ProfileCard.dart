@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mudahjev3/Utils/constant.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({
-    super.key,
-  });
+  final User? user;
+  ProfileCard({
+   required this.user
+});
+
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class ProfileCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Hi Nasrul!',
+                  'Hi ${user?.email?.split('@')[0]}!',
                   style: TextStyle(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,

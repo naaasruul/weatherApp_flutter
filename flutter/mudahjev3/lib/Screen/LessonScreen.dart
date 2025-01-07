@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mudahjev3/Screen/NoteVideo.dart';
 import 'package:mudahjev3/Utils/constant.dart';
 import 'package:mudahjev3/Widgets/MyAppBar.dart';
 import 'package:transformable_list_view/transformable_list_view.dart';
 
-class LessonScreen extends StatelessWidget {
+class LessonScreen extends StatefulWidget {
+  final Map<String, dynamic> category;
+
+  LessonScreen({
+    required this.category
+});
+  @override
+  State<LessonScreen> createState() => _LessonScreenState();
+}
+
+
+class _LessonScreenState extends State<LessonScreen> {
   Matrix4 getTransformMatrix(TransformableListItem item) {
     /// final scale of child when the animation is completed
     const endScaleBound = 0.3;
@@ -27,7 +39,6 @@ class LessonScreen extends StatelessWidget {
 
     return paintTransform;
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,23 +49,32 @@ class LessonScreen extends StatelessWidget {
             child: Column(
               children: [
                 Text(
-                  'Greetings',
+                  widget.category['title'],
                   style: TextStyle(fontSize: 32, color: Color(kBlackColor)),
                 ),
                 Expanded(
                   child: ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
+                      var notes = widget.category['lessons']['notes'][index];
+
                       return ListTile(
-                        title: Text('Title'),
-                        subtitle: Text('This is item number ${index + 1}.'),
+                        title: Text(notes['title']),
+                        subtitle: Text(notes['description']),
                         leading: Icon(Icons.star),
                         onTap: () {
                           // Handle tap if needed
-                          print('Tapped on Item #${index + 1}');
+                          print('LALALA:: ${notes}');
+
+                        //   pass the notes to the next page
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteVideo(content: notes,
+
+                          //   pass data here
+
+                          )));
                         },
                       );
                     },
-                    itemCount: 3,
+                    itemCount: widget.category['lessons']['notes'].length,
                   ),
                 )
               ],

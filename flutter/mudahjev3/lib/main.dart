@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:mudahjev3/Screen/LoginScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Ensures that Flutter is ready before initializing Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // Using the generated configuration options
+  );
+  runApp(MyApp());
 }
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 

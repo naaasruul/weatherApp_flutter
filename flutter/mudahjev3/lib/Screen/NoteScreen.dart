@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mudahjev3/Screen/LessonScreen.dart';
 import 'package:mudahjev3/Utils/constant.dart';
+import 'package:mudahjev3/Widgets/CategoryCard.dart';
 import 'package:mudahjev3/Widgets/ProfileCard.dart';
-class NoteScreen extends StatelessWidget {
-  const NoteScreen({super.key});
+import 'package:firebase_auth/firebase_auth.dart';
 
+class NoteScreen extends StatefulWidget {
+  final User username;
+
+  NoteScreen({required this.username});
+
+  @override
+  State<NoteScreen> createState() => _NoteScreenState();
+}
+
+class _NoteScreenState extends State<NoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -12,7 +22,9 @@ class NoteScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ProfileCard(),
+          ProfileCard(
+            user: widget.username,
+          ),
           SizedBox(
             height: 32,
           ),
@@ -23,35 +35,11 @@ class NoteScreen extends StatelessWidget {
           SizedBox(
             height: 32,
           ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: List.generate(20, (index) {
-                return GestureDetector(
-                  onTap: (){
-                    print(index);
-                  },
-                  child: GestureDetector(
-                    onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>LessonScreen()));
-                    },
-                    child: Card(
-                      elevation: 4.0,
-                      child: Center(
-                        child: Text(
-                          'Bpaak kau',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            ),
-          )
+          CategoryStream()
         ],
       ),
     );
   }
 }
+
 
