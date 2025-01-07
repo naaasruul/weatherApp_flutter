@@ -64,6 +64,7 @@ class _LessonScreenState extends State<LessonScreen> {
                         onTap: () {
                           // Handle tap if needed
                           print('LALALA:: ${notes}');
+                          print('go to next push index $index');
 
                         //   pass the notes to the next page
                           Navigator.push(context, MaterialPageRoute(builder: (context)=>NoteVideo(
