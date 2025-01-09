@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mudahjev3/Screen/LoginScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:mudahjev3/Screen/Registration.dart';
 import 'firebase_options.dart';
 
 
@@ -23,13 +24,14 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Quicksand',
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           bodyLarge: TextStyle(fontSize: 18, color: Colors.black),
-          bodyMedium: TextStyle(fontSize: 16, color: Colors.grey)
+          bodyMedium: TextStyle(fontSize: 16, color: Colors.black),
+          bodySmall:TextStyle(fontSize: 12, color: Colors.black)
         ),
         scaffoldBackgroundColor: Color(0xFFf1f1f1),
       ),
-      home: LoginScreen(),
+      home: Registration(),
     );
   }
 }

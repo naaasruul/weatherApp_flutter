@@ -59,7 +59,9 @@ class InstructionScreen extends StatelessWidget {
                             backgroundColor: const Color(kMainColor),
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>QuizScreen()));
+                            // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuizScreen(
+                            //
+                            // )));
                           },
                           child: Text(
                             'Lets GO!',

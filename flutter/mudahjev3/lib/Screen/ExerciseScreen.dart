@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mudahjev3/Screen/InstructionScreen.dart';
 import 'package:mudahjev3/Screen/QuizScreen.dart';
+import 'package:mudahjev3/Stream/ExerciseStream.dart';
+import 'package:mudahjev3/Widgets/CategoryCard.dart';
 import 'package:mudahjev3/Widgets/ProfileCard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -34,31 +36,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
           SizedBox(
             height: 32,
           ),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: List.generate(20, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    print(index);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => InstructionScreen()));
-                  },
-                  child: Card(
-                    elevation: 4.0,
-                    child: Center(
-                      child: Text(
-                        'Bpaak kau',
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-            ),
-          )
+          ExerciseStream(),
         ],
       ),
     );

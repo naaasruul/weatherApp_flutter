@@ -1,63 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mudahjev3/Screen/SearchResultScreen.dart';
+import 'package:quickalert/quickalert.dart';
 
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
-
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
 
+final _firestore = FirebaseFirestore.instance;
+
 class _SearchScreenState extends State<SearchScreen> {
-  // Controller for the search field
   final TextEditingController _searchController = TextEditingController();
+  String searchQuery = "";
+  List<Map<String, dynamic>> selectedItems = [];
 
-  // Initial list of available items for searching
-  List<String> allItems = [
-    'mak kau',
-    'mak kek',
-    'tak kaw',
-    'suka hati',
-    'mak bau',
-  ];
-
-  // List to store the search results
-  List<String> _searchResults = [];
-
-  // List to store selected items (that will show as chips)
-  List<String> selectedItems = [];
-
-  // Simulate a search operation (filtering based on query)
-  void _performSearch(String query) {
+  void _addToSelected(Map<String, dynamic> note) {
     setState(() {
-      // Filter search results based on query
-      if (query.isEmpty) {
-        _searchResults = [];
-      } else {
-        _searchResults = allItems
-            .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-            .toList();
+      selectedItems.add(note);
+    });
+  }
+
+  void _removeFromSelected(Map<String, dynamic> note) {
+    setState(() {
+      selectedItems.remove(note);
+    });
+  }
+
+  void confirmSentence() {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.confirm,
+      text: selectedItems.isNotEmpty
+          ? 'Are you sure you want to proceed with: ${selectedItems.map((item) => '${item['title']}').join(" ")}?'
+          : 'No items selected',
+      confirmBtnText: 'Yes',
+      cancelBtnText: 'No',
+      confirmBtnColor: Color(0xFFC90000),
+      onConfirmBtnTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchResultScreen(content: selectedItems)));
       }
-    });
-  }
-
-  // Function to add a chip to the selected items list
-  void _addToSelected(String item) {
-    setState(() {
-      selectedItems.add(item);
-    });
-  }
-
-  // Function to remove a chip from the selected items list
-  void _removeFromSelected(String item) {
-    setState(() {
-      selectedItems.remove(item);
-    });
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(
+        title: const Text('Search Firestore & Select Items'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -67,12 +58,14 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: _searchController,
               decoration: const InputDecoration(
-                labelText: 'Search',
+                labelText: 'Search Firestore',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),
               onChanged: (query) {
-                _performSearch(query); // Perform the search
+                setState(() {
+                  searchQuery = query; // Update search query
+                });
               },
             ),
             const SizedBox(height: 20),
@@ -83,33 +76,137 @@ class _SearchScreenState extends State<SearchScreen> {
               children: selectedItems
                   .map(
                     (item) => Chip(
-                  label: Text(item),
-                  onDeleted: () => _removeFromSelected(item),
-                ),
-              )
+                      label: Text(item['title']),
+                      onDeleted: () => _removeFromSelected(item),
+                    ),
+                  )
                   .toList(),
             ),
+
             const SizedBox(height: 20),
 
-            // Display search results
-            _searchResults.isEmpty
-                ? const Center(child: Text('No results found'))
-                : Expanded(
-              child: ListView.builder(
-                itemCount: _searchResults.length,
-                itemBuilder: (context, index) {
-                  final item = _searchResults[index];
-                  return ListTile(
-                    title: Text(item),
-                    onTap: () {
-                      // Add the tapped item to the selected chips list
-                      if (!selectedItems.contains(item)) {
-                        _addToSelected(item);
+            // Firestore StreamBuilder
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _firestore.collection('lessons').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'An error occurred: ${snapshot.error}',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    );
+                  }
+
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text('No lessons available.'),
+                    );
+                  }
+
+                  // Process Firestore documents
+                  var documents = snapshot.data!.docs.map((doc) {
+                    return doc.data() as Map<String, dynamic>;
+                  }).toList();
+
+                  // Filter the results based on the search query
+                  var filteredResults = documents.where((doc) {
+                    // Ensure 'notes' exists and is a list
+                    if (doc['notes'] is! List) return false;
+
+                    // Check if any 'title' in the 'notes' array matches the query
+                    List notes = doc['notes'];
+                    return notes.any((note) {
+                      if (note is Map<String, dynamic>) {
+                        String title = note['title'] ?? "";
+                        return title
+                            .toLowerCase()
+                            .contains(searchQuery.toLowerCase());
                       }
+                      return false;
+                    });
+                  }).toList();
+
+                  // No matching results
+                  if (filteredResults.isEmpty) {
+                    return const Center(
+                      child: Text('No matching results found.'),
+                    );
+                  }
+
+                  // Render the filtered results
+                  return ListView.builder(
+                    itemCount: filteredResults.length,
+                    itemBuilder: (context, index) {
+                      var result = filteredResults[index];
+                      List notes = result['notes'];
+
+                      // Extract relevant note fields safely
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        // Allows nested ListView inside another
+                        physics: const NeverScrollableScrollPhysics(),
+                        // Prevents scroll conflict
+                        itemCount: notes.length,
+                        itemBuilder: (context, noteIndex) {
+                          var note = notes[noteIndex] as Map<String, dynamic>;
+                          print('INI APA::: $note');
+                          String title = note['title'] ?? "No Title";
+                          String pronouns = note['pronouns'] ?? "No Pronouns";
+
+                          return ListTile(
+                            title: Text(title),
+                            subtitle: Text(pronouns),
+                            onTap: () {
+                              if (!selectedItems.contains(title)) {
+                                _addToSelected(note);
+                              }
+                            },
+                          );
+                        },
+                      );
                     },
                   );
                 },
               ),
+            ),
+
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Add your onPressed logic here
+                      confirmSentence();
+                      print(selectedItems);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 32.0, vertical: 16.0),
+                      backgroundColor: Color(0xFFC90000),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(12), // Rounded corners
+                      ),
+                      elevation: 8,
+                      // Adds shadow effect
+                      textStyle: const TextStyle(
+                        fontSize: 20, // Larger font size
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    child: const Text(
+                      "Submit",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

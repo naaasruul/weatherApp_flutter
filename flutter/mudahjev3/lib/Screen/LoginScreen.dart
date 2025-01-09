@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mudahjev3/Screen/Registration.dart';
 import 'package:mudahjev3/Utils/constant.dart';
 import 'package:mudahjev3/Widgets/MainButton.dart';
 import 'HomeScreen.dart';
@@ -14,7 +15,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool _isLoading = false;
   final _auth = FirebaseAuth.instance;
 
@@ -49,7 +49,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.black),
                       onChanged: (value) {
-                        //Do something with the user input.
                         email = value;
                       },
                       decoration: kTextFieldDecoration.copyWith(
@@ -63,7 +62,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: Colors.black),
                       onChanged: (value) {
-                        //Do something with the user input.
                         password = value;
                       },
                       decoration: kTextFieldDecoration.copyWith(
@@ -73,54 +71,66 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 24.0,
                     ),
                     MainButton(
-                        buttonColor: Color(0xFFC90000),
-                        onPress: () async{
-                          setState(() {
-                            _isLoading=true;
-                          });
-                          try{
-                            final cred = await _auth.signInWithEmailAndPassword(
-                              email:email,
-                              password: password,
-                            );
+                      buttonColor: Color(0xFFC90000),
+                      onPress: () async {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        try {
+                          final cred = await _auth.signInWithEmailAndPassword(
+                            email: email,
+                            password: password,
+                          );
 
-                            if(cred != null){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Homescreen()));
-                            }
-
-                          } on FirebaseAuthException catch(e){
-                            if (e.code == 'user-not-found') {
-                              QuickAlert.show(
-                                context: context,
-                                type: QuickAlertType.error,
-                                text: 'Sorry, user not found',
-                                title: 'Oops...',
-                                backgroundColor: Colors.white,
-                                titleColor: Colors.black,
-                                textColor: Colors.black,
-                              );
-                            } else if (e.code == 'wrong-password') {
-                              QuickAlert.show(
-                                context: context,
-                                type: QuickAlertType.error,
-                                text: 'Sorry, wrong password',
-                                title: 'Oops...',
-                                backgroundColor: Colors.white,
-                                titleColor: Colors.black,
-                                textColor: Colors.black,
-                              );
-
-                            }
-
-
-                            setState(() {
-                              _isLoading = false;
-                            });
-
-                            print(e);
+                          if (cred != null) {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Homescreen()));
                           }
-                        },
-                        text: 'Login')
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.error,
+                              text: 'Sorry, user not found',
+                              title: 'Oops...',
+                              backgroundColor: Colors.white,
+                              titleColor: Colors.black,
+                              textColor: Colors.black,
+                            );
+                          } else if (e.code == 'wrong-password') {
+                            QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.error,
+                              text: 'Sorry, wrong password',
+                              title: 'Oops...',
+                              backgroundColor: Colors.white,
+                              titleColor: Colors.black,
+                              textColor: Colors.black,
+                            );
+                          }
+
+                          setState(() {
+                            _isLoading = false;
+                          });
+
+                          print(e);
+                        }
+                      },
+                      text: 'Login',
+                    ),
+                    SizedBox(
+                      height: 16.0,
+                    ),
+                    // Register Button
+                    MainButton(
+                      buttonColor: Color(0xFF007BFF), // Blue color
+                      onPress: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Registration()),
+                        );
+                      },
+                      text: 'Register',
+                    ),
                   ],
                 ),
               ),

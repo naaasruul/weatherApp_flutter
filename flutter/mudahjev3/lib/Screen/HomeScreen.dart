@@ -57,6 +57,7 @@ class _HomescreenState extends State<Homescreen> {
         username: loggedInUser,
       ),
     ];
+
     return Scaffold(
       appBar: MyAppBar(
         title: 'Home Page',
@@ -75,9 +76,8 @@ class _HomescreenState extends State<Homescreen> {
           });
         },
       ),
-      body: ModalProgressHUD(
-        inAsyncCall: isLoading,
-          child: _pages[_isSelected]),
+      body:
+          ModalProgressHUD(inAsyncCall: isLoading, child: _pages[_isSelected]),
     );
   }
 }

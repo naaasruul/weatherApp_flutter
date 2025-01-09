@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:video_player/video_player.dart';
 import 'package:multi_video_player/multi_video_player.dart';
 
 class NoteVideo extends StatefulWidget {
