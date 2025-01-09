@@ -56,7 +56,7 @@ class InstructionScreen extends StatelessWidget {
                         SizedBox(height: 16,),
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(kMainColor),
+                            backgroundColor: const Color(kPrimaryColor),
                           ),
                           onPressed: () {
                             // Navigator.push(context, MaterialPageRoute(builder: (context)=>QuizScreen(

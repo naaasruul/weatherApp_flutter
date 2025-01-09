@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mudahjev3/Screen/SearchResultScreen.dart';
+import 'package:mudahjev3/Utils/constant.dart';
 import 'package:quickalert/quickalert.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -27,24 +28,29 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  void confirmSentence() {
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.confirm,
-      text: selectedItems.isNotEmpty
-          ? 'Are you sure you want to proceed with: ${selectedItems.map((item) => '${item['title']}').join(" ")}?'
-          : 'No items selected',
-      confirmBtnText: 'Yes',
-      cancelBtnText: 'No',
-      confirmBtnColor: Color(0xFFC90000),
-      onConfirmBtnTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchResultScreen(content: selectedItems)));
-      }
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
+    void goToResultPage() {
+      Navigator.push(context, MaterialPageRoute(builder: (context)=>SearchResultScreen(content: selectedItems)));
+    }
+    void confirmSentence() {
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.confirm,
+          text: selectedItems.isNotEmpty
+              ? 'Are you sure you want to proceed with: ${selectedItems.map((item) => '${item['title']}').join(" ")}?'
+              : 'No items selected',
+          confirmBtnText: 'Yes',
+          cancelBtnText: 'No',
+          confirmBtnColor: Color(kPrimaryColor),
+          onConfirmBtnTap: (){
+            Navigator.pop(context);
+            goToResultPage();
+          }
+      );
+    }
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -185,7 +191,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 32.0, vertical: 16.0),
-                      backgroundColor: Color(0xFFC90000),
+                      backgroundColor: Color(kSecondaryColor),
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(12), // Rounded corners
@@ -209,5 +215,7 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
     );
-  }
+
+
+}
 }

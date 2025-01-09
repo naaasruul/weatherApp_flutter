@@ -30,7 +30,7 @@ class _NoteScreenState extends State<NoteScreen> {
           ),
           Text(
             'Categories',
-            style: TextStyle(fontSize: 32),
+            style: TextStyle(fontSize: 32,color: Color(kSecondaryColor)),
           ),
           SizedBox(
             height: 32,

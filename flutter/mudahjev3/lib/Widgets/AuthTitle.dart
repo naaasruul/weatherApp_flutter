@@ -19,7 +19,7 @@ class AuthTitle extends StatelessWidget {
         Text(title,textAlign:TextAlign.start,style: TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.w500,
-          color: Color(kMainColor),
+          color: Color(kPrimaryColor),
         ),),
         Text(desc)
       ],

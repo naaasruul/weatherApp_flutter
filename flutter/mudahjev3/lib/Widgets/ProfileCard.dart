@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mudahjev3/Utils/constant.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 final _auth = FirebaseAuth.instance;
 
 class ProfileCard extends StatelessWidget {
@@ -13,6 +12,7 @@ class ProfileCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color(kSecondaryColor),
       elevation: 4.0,
       clipBehavior: Clip.hardEdge,
       child: Container(
@@ -25,22 +25,42 @@ class ProfileCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 CircleAvatar(
-                  child: Text(user?.displayName?.substring(0, 1).toUpperCase() ?? 'U'),
+                  backgroundColor: Color(kTertiary),
+                  child: Text(
+                    user?.displayName?.substring(0, 1).toUpperCase() ?? 'U',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-                SizedBox(width: 8,),
-                Text(user?.displayName ?? '',style: TextStyle(fontSize: 20,fontWeight: FontWeight.w500),)
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  user?.displayName ?? '',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white),
+                )
               ],
             ),
             const SizedBox(
               height: 15,
             ),
-             Column(
+            Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.end,
-              children: [Text('950',style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold
-              ),), Text('Points'),
+              children: [
+                Text(
+                  '950',
+                  style: TextStyle(
+                      fontSize: 32,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'Points',
+                  style: TextStyle(color: Colors.white),
+                ),
               ],
             )
           ],

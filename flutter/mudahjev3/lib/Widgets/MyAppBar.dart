@@ -39,7 +39,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                   child: Icon(
                     Icons.logout,
                     size: 60,
-                    color: Colors.red,
+                    color: Color(kSecondaryColor),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -75,7 +75,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                         _performLogout(); // Call the logout function
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
+                        backgroundColor: Color(0xffFF4040),
                       ),
                       child: const Text('LOG OUT',style: TextStyle(color: Colors.white ),),
                     ),
@@ -90,6 +90,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
 
 
     return AppBar(
+      titleSpacing: 20,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          bottom: Radius.circular(30)
+        )
+      ),
       title: Text(title),
       actions: [
         GestureDetector(
@@ -103,7 +109,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         )
       ],
       automaticallyImplyLeading: backButton,
-      backgroundColor: const Color(kMainColor),
+      backgroundColor: const Color(kPrimaryColor),
       leading: backButton
           ? IconButton(
               onPressed: () {

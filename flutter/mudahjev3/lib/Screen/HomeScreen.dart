@@ -62,7 +62,7 @@ class _HomescreenState extends State<Homescreen> {
         backButton: false,
       ),
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Color(kMainColor),
+        backgroundColor: Color(kPrimaryColor),
         items: <Widget>[
           Icon(Icons.book_rounded, size: 30),
           Icon(Icons.search, size: 30),

@@ -25,7 +25,7 @@ class ExerciseStream extends StatelessWidget {
           for (var category in categories!) {
             final categoryData = category.data() as Map<String, dynamic>;
             var categoryCard =
-            CategoryCard(title: categoryData['title'], onTap: () {
+            CategoryCard(title:'Quiz \n ${categoryData['title']}',type: 'exercise', onTap: () {
               print(categoryData['lessons']['quizzes']);
               Navigator.push(context, MaterialPageRoute(builder: (context)=>QuizScreen(
                 // send data to lesson screen inside here

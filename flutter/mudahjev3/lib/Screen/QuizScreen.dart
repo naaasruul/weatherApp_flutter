@@ -127,7 +127,7 @@ class _QuizScreenState extends State<QuizScreen> {
                             backHome();
                           },
                           backgroundColor: Color(kWhiteColor),
-                          confirmBtnColor: Color(kMainColor),
+                          confirmBtnColor: Color(kPrimaryColor),
                         );
                       } else {
                         // Show error alert if answer is incorrect
@@ -138,7 +138,7 @@ class _QuizScreenState extends State<QuizScreen> {
                           autoCloseDuration: const Duration(seconds: 2),
                           showConfirmBtn: false,
                           backgroundColor: Color(kWhiteColor),
-                          confirmBtnColor: Color(kMainColor),
+                          confirmBtnColor: Color(kPrimaryColor),
                         );
                       }
           
@@ -158,7 +158,7 @@ class _QuizScreenState extends State<QuizScreen> {
                               autoCloseDuration: const Duration(seconds: 2),
                               showConfirmBtn: true,
                               backgroundColor: Color(kWhiteColor),
-                              confirmBtnColor: Color(kMainColor),
+                              confirmBtnColor: Color(kPrimaryColor),
                               onConfirmBtnTap: (){
                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>Homescreen()));
                               }
@@ -172,7 +172,7 @@ class _QuizScreenState extends State<QuizScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFC90000),
+                    backgroundColor: const Color(kPrimaryColor),
                     padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   ),

@@ -22,7 +22,7 @@ class AuthFooter extends StatelessWidget {
               onTap: navigator,
               child: Text(
                 navigatorText,
-                style: TextStyle(color: Color(kMainColor)),
+                style: TextStyle(color: Color(kPrimaryColor)),
               )),
         ],
       ),

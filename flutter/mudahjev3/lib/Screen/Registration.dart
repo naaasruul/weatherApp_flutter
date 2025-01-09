@@ -71,15 +71,18 @@ class _RegistrationState extends State<Registration> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              // Flexible(
-              //   child: Hero(
-              //     tag: 'logo',
-              //     child: Container(
-              //       height: 200.0,
-              //       child: Image.asset('images/logo.png'),
-              //     ),
-              //   ),
-              // ),
+              Flexible(
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 50),
+                  child: Hero(
+                    tag: 'logo',
+                    child: Container(
+                      height: 200.0,
+                      child: Image.asset('assets/logo.png'),
+                    ),
+                  ),
+                ),
+              ),
               AuthTitle(
                   title: 'Register',
                   desc: 'Please enter details to register'),
@@ -146,7 +149,7 @@ class _RegistrationState extends State<Registration> {
                   //     print(password);
                 },
                 text: 'Register',
-                buttonColor: const Color(0xFFC90000),
+                buttonColor: const Color(kPrimaryColor),
               ),
 
               AuthFooter(navigatorText:'Login',text: 'Already have an account?', navigator: (){
