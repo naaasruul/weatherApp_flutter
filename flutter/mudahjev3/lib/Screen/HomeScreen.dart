@@ -49,9 +49,7 @@ class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     List<Widget> _pages = [
-      NoteScreen(
-        username: loggedInUser,
-      ),
+      NoteScreen(username: loggedInUser,),
       SearchScreen(),
       ExerciseScreen(
         username: loggedInUser,
@@ -60,7 +58,7 @@ class _HomescreenState extends State<Homescreen> {
 
     return Scaffold(
       appBar: MyAppBar(
-        title: 'Home Page',
+        title: 'MudahJe',
         backButton: false,
       ),
       bottomNavigationBar: CurvedNavigationBar(

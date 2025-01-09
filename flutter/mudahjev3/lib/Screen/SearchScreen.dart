@@ -46,9 +46,6 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Search Firestore & Select Items'),
-      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -58,7 +55,8 @@ class _SearchScreenState extends State<SearchScreen> {
             TextField(
               controller: _searchController,
               decoration: const InputDecoration(
-                labelText: 'Search Firestore',
+
+                labelText: 'Make a sentence',
                 border: OutlineInputBorder(),
                 suffixIcon: Icon(Icons.search),
               ),
@@ -68,7 +66,6 @@ class _SearchScreenState extends State<SearchScreen> {
                 });
               },
             ),
-            const SizedBox(height: 20),
 
             // Display selected chips
             Wrap(

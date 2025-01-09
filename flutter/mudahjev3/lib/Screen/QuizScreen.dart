@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mudahjev3/Screen/HomeScreen.dart';
+import 'package:mudahjev3/Screen/NoteScreen.dart';
 import 'package:mudahjev3/Widgets/MyAppBar.dart';
+import 'package:mudahjev3/Widgets/MyContainer.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:mudahjev3/Utils/constant.dart';
 import 'package:video_player/video_player.dart';
@@ -46,6 +48,9 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    void backHome() {
+      Navigator.pop(context);
+    }
     final quiz = widget.content[currentIndex]; // Get current quiz data
     return Scaffold(
       appBar: MyAppBar(
@@ -53,130 +58,136 @@ class _QuizScreenState extends State<QuizScreen> {
         backButton: false,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Video Player
-            Container(
-              width: double.infinity,
-              height: 450,
-              color: Colors.grey[300],
-              child: _videoController.value.isInitialized
-                  ? VideoPlayer(_videoController)  // Show video if initialized
-                  : const Center(
-                child: CircularProgressIndicator(),  // Show loading spinner if video not initialized
+        child: MyContainer(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Video Player
+              Container(
+                width: double.infinity,
+                height: 400,
+                color: Colors.grey[300],
+                child: _videoController.value.isInitialized
+                    ? VideoPlayer(_videoController)  // Show video if initialized
+                    : const Center(
+                  child: CircularProgressIndicator(),  // Show loading spinner if video not initialized
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-        
-            // Quiz Question
-            Center(
-              child: Text(
-                'Question ${currentIndex + 1}', // Display question number
-                style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
+              const SizedBox(height: 20),
+          
+              // Quiz Question
+              Center(
+                child: Text(
+                  'Question ${currentIndex + 1}', // Display question number
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-        
-            // Options
-            Column(
-              children: List.generate(
-                quiz['options'].length, // Generate options dynamically
-                    (optionIndex) {
-                  return RadioListTile<int>(
-                    title: Text(
-                        'Option ${optionIndex + 1}: ${quiz['options'][optionIndex]}'),
-                    value: optionIndex + 1, // Option value (1, 2, 3, ...)
-                    groupValue: selectedAnswer,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedAnswer = value; // Update the selected answer
+              const SizedBox(height: 10),
+          
+              // Options
+              Column(
+                children: List.generate(
+                  quiz['options'].length, // Generate options dynamically
+                      (optionIndex) {
+                    return RadioListTile<int>(
+                      title: Text(
+                          'Option ${optionIndex + 1}: ${quiz['options'][optionIndex]}'),
+                      value: optionIndex + 1, // Option value (1, 2, 3, ...)
+                      groupValue: selectedAnswer,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedAnswer = value; // Update the selected answer
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+          
+              // Submit Button
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (selectedAnswer != null) {
+                      // Check if the selected answer is correct
+                      print(selectedAnswer);
+                      print(quiz['answer']);
+                      if (selectedAnswer.toString() == quiz['answer'].toString()) {
+                        // Show success alert if answer is correct
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.success,
+                          text: 'Correct!',
+                          showConfirmBtn: false,
+                          onConfirmBtnTap: (){
+                            backHome();
+                          },
+                          backgroundColor: Color(kWhiteColor),
+                          confirmBtnColor: Color(kMainColor),
+                        );
+                      } else {
+                        // Show error alert if answer is incorrect
+                        QuickAlert.show(
+                          context: context,
+                          type: QuickAlertType.error,
+                          text: 'Incorrect. Try again!',
+                          autoCloseDuration: const Duration(seconds: 2),
+                          showConfirmBtn: false,
+                          backgroundColor: Color(kWhiteColor),
+                          confirmBtnColor: Color(kMainColor),
+                        );
+                      }
+          
+                      // Move to the next question after a short delay
+                      Future.delayed(const Duration(seconds: 2), () {
+                        setState(() {
+                          if (currentIndex < widget.content.length - 1) {
+                            currentIndex++; // Move to next question
+                            selectedAnswer = null; // Reset the selected answer
+                            _initializeVideoPlayer(); // Reinitialize video player for the next question
+                          } else {
+                            // All questions completed
+                            QuickAlert.show(
+                              context: context,
+                              type: QuickAlertType.info,
+                              text: 'Quiz Completed!',
+                              autoCloseDuration: const Duration(seconds: 2),
+                              showConfirmBtn: true,
+                              backgroundColor: Color(kWhiteColor),
+                              confirmBtnColor: Color(kMainColor),
+                              onConfirmBtnTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Homescreen()));
+                              }
+                            );
+          
+                          }
+                        });
+          
+          
                       });
-                    },
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 20),
-        
-            // Submit Button
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  if (selectedAnswer != null) {
-                    // Check if the selected answer is correct
-                    print(selectedAnswer);
-                    print(quiz['answer']);
-                    if (selectedAnswer.toString() == quiz['answer'].toString()) {
-                      // Show success alert if answer is correct
-                      QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.success,
-                        text: 'Correct!',
-                        autoCloseDuration: const Duration(seconds: 2),
-                        showConfirmBtn: false,
-                        backgroundColor: Color(kWhiteColor),
-                        confirmBtnColor: Color(kMainColor),
-                      );
-                    } else {
-                      // Show error alert if answer is incorrect
-                      QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.error,
-                        text: 'Incorrect. Try again!',
-                        autoCloseDuration: const Duration(seconds: 2),
-                        showConfirmBtn: false,
-                        backgroundColor: Color(kWhiteColor),
-                        confirmBtnColor: Color(kMainColor),
-                      );
                     }
-        
-                    // Move to the next question after a short delay
-                    Future.delayed(const Duration(seconds: 2), () {
-                      setState(() {
-                        if (currentIndex < widget.content.length - 1) {
-                          currentIndex++; // Move to next question
-                          selectedAnswer = null; // Reset the selected answer
-                          _initializeVideoPlayer(); // Reinitialize video player for the next question
-                        } else {
-                          // All questions completed
-                          QuickAlert.show(
-                            context: context,
-                            type: QuickAlertType.info,
-                            text: 'Quiz Completed!',
-                            autoCloseDuration: const Duration(seconds: 2),
-                            showConfirmBtn: true,
-                            backgroundColor: Color(kWhiteColor),
-                            confirmBtnColor: Color(kMainColor),
-                            onConfirmBtnTap: (){
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>Homescreen()));
-                            }
-                          );
-        
-                        }
-                      });
-        
-        
-                    });
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFC90000),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFC90000),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  ),
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+                  ),
                 ),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
   }
+
+
 }

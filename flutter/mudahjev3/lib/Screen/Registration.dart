@@ -4,6 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:mudahjev3/Screen/LoginScreen.dart';
 import 'package:mudahjev3/Utils/constant.dart';
+import 'package:mudahjev3/Widgets/AuthFooter.dart';
+import 'package:mudahjev3/Widgets/AuthTitle.dart';
 import 'package:mudahjev3/Widgets/MainButton.dart';
 import 'package:mudahjev3/Widgets/MyButton.dart';
 
@@ -17,12 +19,10 @@ class Registration extends StatefulWidget {
 final _auth = FirebaseAuth.instance;
 
 class _RegistrationState extends State<Registration> {
-
-
   Future<void> addUserToFirestore(String username, int initialScore) async {
     // Get current user's UID
     final String uid = FirebaseAuth.instance.currentUser!.uid;
-      print('UID:: $uid');
+    print('UID:: $uid');
 
     // Reference to the Firestore 'users' collection
     final userRef = FirebaseFirestore.instance.collection('users').doc(uid);
@@ -49,7 +49,7 @@ class _RegistrationState extends State<Registration> {
       print(newUser);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginScreen()));
-        } catch (e) {
+    } catch (e) {
       print('ERROR:::: $e');
     }
   }
@@ -62,11 +62,11 @@ class _RegistrationState extends State<Registration> {
     String name = '';
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFf1f1f1),
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -80,13 +80,17 @@ class _RegistrationState extends State<Registration> {
               //     ),
               //   ),
               // ),
+              AuthTitle(
+                  title: 'Register',
+                  desc: 'Please enter details to register'),
+
               SizedBox(
-                height: 48.0,
+                height: 8,
               ),
               TextField(
                 keyboardType: TextInputType.text,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 onChanged: (value) {
                   //Do something with the user input.\
                   name = value;
@@ -94,10 +98,13 @@ class _RegistrationState extends State<Registration> {
                 decoration:
                     kTextFieldDecoration.copyWith(hintText: 'Enter your name'),
               ),
+              const SizedBox(
+                height: 8.0,
+              ),
               TextField(
                 keyboardType: TextInputType.emailAddress,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 onChanged: (value) {
                   //Do something with the user input.\
                   email = value;
@@ -105,13 +112,13 @@ class _RegistrationState extends State<Registration> {
                 decoration:
                     kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 8.0,
               ),
               TextField(
                 obscureText: true,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 onChanged: (value) {
                   //Do something with the user input.
                   password = value;
@@ -119,7 +126,7 @@ class _RegistrationState extends State<Registration> {
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter your password'),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 24.0,
               ),
 
@@ -139,8 +146,12 @@ class _RegistrationState extends State<Registration> {
                   //     print(password);
                 },
                 text: 'Register',
-                buttonColor: Color(0xFFC90000),
+                buttonColor: const Color(0xFFC90000),
               ),
+
+              AuthFooter(navigatorText:'Login',text: 'Already have an account?', navigator: (){
+                Navigator.pop(context);
+              })
             ],
           ),
         ),
@@ -148,3 +159,4 @@ class _RegistrationState extends State<Registration> {
     );
   }
 }
+

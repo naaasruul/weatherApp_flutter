@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:mudahjev3/Utils/constant.dart';
+import 'package:mudahjev3/Widgets/MyAppBar.dart';
+import 'package:mudahjev3/Widgets/MyContainer.dart';
 import 'package:multi_video_player/multi_video_player.dart';
 
 class SearchResultScreen extends StatefulWidget {
@@ -62,59 +65,63 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Previous Button
-          FloatingActionButton(
-            onPressed: _previousVideo,
-            child: Icon(Icons.arrow_back),
-          ),
-          SizedBox(width: 20),
-          // Next Button
-          FloatingActionButton(
-            onPressed: _nextVideo,
-            child: Icon(Icons.arrow_forward),
-          ),
-        ],
-      ),
+      appBar: MyAppBar(title: 'MudahJe', backButton: true),
       body: ModalProgressHUD(
         inAsyncCall: _isLoading,
-        child: Column(
-          children: [
-            Expanded(
-              child: MultiVideoPlayer.network(
-                height: 400,
-                width: MediaQuery.of(context).size.width,
-                videoSourceList: videoSources,
-                scrollDirection: Axis.horizontal,
-                preloadPagesCount: videoSources.length,
-                onPageChanged: (videoPlayerController, index) {
-                  setState(() {
-                    _currentIndex = index;
-                    title = widget.content[_currentIndex]['title'];
-                    desc = widget.content[_currentIndex]['pronouns'];
-                  });
-                },
-              ),
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      color: Colors.black,
+        child: MyContainer(
+          child: Container(
+            
+            child: Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10,horizontal: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0)
+                    ),
+                    child: MultiVideoPlayer.network(
+                      height: 400,
+                      width: MediaQuery.of(context).size.width,
+                      videoSourceList: videoSources,
+                      scrollDirection: Axis.horizontal,
+                      preloadPagesCount: videoSources.length,
+                      onPageChanged: (videoPlayerController, index) {
+                        setState(() {
+                          _currentIndex = index;
+                          title = widget.content[_currentIndex]['title'];
+                          desc = widget.content[_currentIndex]['pronouns'];
+                        });
+                      },
                     ),
                   ),
-                  SizedBox(height: 16),
-                  Text(desc),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 32),
+                      Text(
+                        desc,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.grey, fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

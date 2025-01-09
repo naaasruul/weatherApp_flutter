@@ -23,9 +23,7 @@ class _ExerciseScreenState extends State<ExerciseScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ProfileCard(
-            user: widget.username,
-          ),
+          ProfileCard(user: widget.username,),
           SizedBox(
             height: 32,
           ),
