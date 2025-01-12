@@ -1,9 +1,11 @@
-class Task{
+import 'package:flutter/cupertino.dart';
+
+class Task extends ChangeNotifier{
   String taskName;
   bool isDone;
 
   Task({
-    required this.taskName,
+    this.taskName = '',
     this.isDone = false,
 });
 
